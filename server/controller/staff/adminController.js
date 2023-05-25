@@ -1,9 +1,20 @@
+const Admin = require("../../model/Staff/Admin");
 // admin register
-exports.registerAdminCtrl = (req, res) => {
+exports.registerAdminCtrl = async (req, res) => {
+  const { name, email, password } = req.body;
   try {
+    const adminFound = await Admin.findOne({ email });
+    // if (adminFound){
+    //   res.json('Admin exist')
+    // }
+    const user = await Admin.create({
+      name,
+      email,
+      password,
+    });
     res.status(201).json({
       status: "success",
-      data: "Admin has been registered",
+      data: user,
     });
   } catch (error) {
     res.json({
@@ -14,12 +25,19 @@ exports.registerAdminCtrl = (req, res) => {
 };
 
 // admin login
-exports.loginAdminCtrl = (req, res) => {
+exports.loginAdminCtrl = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    res.status(201).json({
-      status: "success",
-      data: "Admin has been logedin",
-    });
+    const user = await Admin.findOne({ email });
+    if (!user) { 
+      res.json({ message: "User not found" });
+    }
+    if(user &&(await user.verifyPassword(password))) {
+      return res.json({data: user})
+    }else{
+      res.json({ message: "Invalid login" });
+    }
+    
   } catch (error) {
     res.json({
       status: "failed",

@@ -5,6 +5,7 @@ const app = express();
 
 // Middlewares
 app.use(morgan("dev"));
+app.use(express.json())
 
 // Routes
 
