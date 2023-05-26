@@ -1,5 +1,8 @@
 const AsyncHandler = require("express-async-handler");
 const Admin = require("../../model/Staff/Admin");
+const generateToken = require("../../utils/generateToken");
+const verifyToken = require("../../utils/verifyToken");
+
 // admin register
 
 exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
@@ -20,25 +23,23 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
   });
 });
 // admin login
-exports.loginAdminCtrl = async (req, res) => {
+exports.loginAdminCtrl = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  try {
-    const user = await Admin.findOne({ email });
-    if (!user) {
-      res.json({ message: "User not found" });
-    }
-    if (user && (await user.verifyPassword(password))) {
-      return res.json({ data: user });
-    } else {
-      res.json({ message: "Invalid login" });
-    }
-  } catch (error) {
-    res.json({
-      status: "failed",
-      error: error.message,
-    });
+
+  const user = await Admin.findOne({ email });
+  if (!user) {
+    res.json({ message: "User not found" });
   }
-};
+  if (user && (await user.verifyPassword(password))) {
+    const token = generateToken(user._id);
+
+      const verify = verifyToken(token);
+
+    return res.json({ data: generateToken(user._id), user, verify });
+  } else {
+    res.json({ message: "Invalid login" });
+  }
+});
 
 // Get all admins
 exports.getAdminsCtrl = (req, res) => {
@@ -58,6 +59,7 @@ exports.getAdminsCtrl = (req, res) => {
 // Get singel admin
 exports.getAdminCtrl = (req, res) => {
   try {
+    console.log(req.userAuth)
     res.status(201).json({
       status: "success",
       data: "single admin",

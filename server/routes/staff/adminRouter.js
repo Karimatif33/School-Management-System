@@ -14,6 +14,8 @@ const {
   adminPublishResultsCtrl,
   adminUnpuplishResultsCtrl,
 } = require("../../controller/staff/adminController");
+const isLogin = require("../../middlewares/isLogin")
+
 // admin register
 adminRouter.post("/register", registerAdminCtrl);
 
@@ -24,7 +26,7 @@ adminRouter.post("/login", loginAdminCtrl);
 adminRouter.get("/", getAdminsCtrl);
 
 // Get singel admin
-adminRouter.get("/:id", getAdminCtrl);
+adminRouter.get("/:id",isLogin ,getAdminCtrl);
 
 // Update admin
 adminRouter.put("/:id", updateAdminCtrl);
