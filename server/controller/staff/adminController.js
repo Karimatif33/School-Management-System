@@ -1,7 +1,9 @@
 const AsyncHandler = require("express-async-handler");
+const bcrypt = require("bcryptjs");
 const Admin = require("../../model/Staff/Admin");
 const generateToken = require("../../utils/generateToken");
 const verifyToken = require("../../utils/verifyToken");
+const { hashPassword, isPaassMatched } = require("../../utils/helpers");
 
 // admin register
 
@@ -12,80 +14,116 @@ exports.registerAdminCtrl = AsyncHandler(async (req, res) => {
   if (adminFound) {
     throw new Error("Admin Exists");
   }
+
   const user = await Admin.create({
     name,
     email,
-    password,
+    password: await hashPassword(password),
   });
   res.status(201).json({
     status: "success",
     data: user,
+    message: "Admin registered successfully",
   });
 });
 // admin login
 exports.loginAdminCtrl = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
-
   const user = await Admin.findOne({ email });
   if (!user) {
     res.json({ message: "User not found" });
   }
-  if (user && (await user.verifyPassword(password))) {
-    const token = generateToken(user._id);
-
-      const verify = verifyToken(token);
-
-    return res.json({ data: generateToken(user._id), user, verify });
+  // verify password
+  const isMatched = await isPaassMatched(password, user.password);
+  if (!isMatched) {
+    res.json({ message: "Wrong password" });
   } else {
-    res.json({ message: "Invalid login" });
+    const admin = await Admin.findById(user._id).select("role");
+
+    return res.json({
+      data: generateToken(user._id),
+      role: admin,
+      message: "Admin logged in successfully",
+    });
   }
 });
 
 // Get all admins
-exports.getAdminsCtrl = (req, res) => {
-  try {
-    res.status(201).json({
-      status: "success",
-      data: "All admins",
-    });
-  } catch (error) {
-    res.json({
-      status: "failed",
-      error: error.message,
-    });
-  }
-};
+exports.getAdminsCtrl = AsyncHandler(async (req, res) => {
+  const admin = await Admin.find();
+  res.status(200).json({
+    status: "success",
+    message: "Admin fetched successfully",
+    data: admin,
+  });
+});
 
-// Get singel admin
-exports.getAdminCtrl = (req, res) => {
-  try {
-    console.log(req.userAuth)
-    res.status(201).json({
+// Get singel admin (currnt logedin user)
+exports.getAdminCtrl = AsyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.userAuth._id).select(
+    "-password -createdAt -updatedAt"
+  );
+
+  if (!admin) {
+    throw new Error("Admin not found");
+  } else {
+    res.status(200).json({
       status: "success",
-      data: "single admin",
-    });
-  } catch (error) {
-    res.json({
-      status: "failed",
-      error: error.message,
+      data: admin,
+      message: "Admin profile fetched in successfully",
     });
   }
-};
+});
 
 // Update admin
-exports.updateAdminCtrl = (req, res) => {
-  try {
-    res.status(201).json({
+exports.updateAdminCtrl = AsyncHandler(async (req, res) => {
+  const { email, name, password, role } = req.body;
+  // if email is alredy exist
+  const emailExist = await Admin.findOne({ email });
+  if (emailExist) {
+    throw new Error("This email is taken");
+  }
+  // check if iser ubdating password
+  if (password) {
+    // hash password
+    const admin = await Admin.findByIdAndUpdate(
+      req.userAuth._id,
+      {
+        email,
+        password: await hashPassword(password),
+        name,
+        role,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(200).json({
       status: "success",
-      data: "Update admin",
+      data: admin,
+      message: "Admin updated successfully",
     });
-  } catch (error) {
-    res.json({
-      status: "failed",
-      error: error.message,
+  } else {
+    const admin = await Admin.findByIdAndUpdate(
+      req.userAuth._id,
+      {
+        email,
+        name,
+        role,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    res.status(200).json({
+      status: "success",
+      data: admin,
+      message: "Admin updated successfully",
     });
   }
-};
+});
 
 // delete admin
 exports.delteAdminCtrl = (req, res) => {
