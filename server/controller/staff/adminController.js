@@ -60,9 +60,9 @@ exports.getAdminsCtrl = AsyncHandler(async (req, res) => {
 
 // Get singel admin (currnt logedin user)
 exports.getAdminCtrl = AsyncHandler(async (req, res) => {
-  const admin = await Admin.findById(req.userAuth._id).select(
-    "-password -createdAt -updatedAt"
-  );
+  const admin = await Admin.findById(req.userAuth._id)
+    .select("-password -createdAt -updatedAt")
+    .populate("academicYears");
 
   if (!admin) {
     throw new Error("Admin not found");

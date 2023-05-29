@@ -4,7 +4,7 @@ const {
   globalErrHandler,
   notFoundErr,
 } = require("../middlewares/globalErrHandler");
-const academicYearRouter = require("../routes/academics/academicYear");
+const academicYearRouter = require("../routes/academics/academicYearRouter");
 const adminRouter = require("../routes/staff/adminRouter");
 const app = express();
 

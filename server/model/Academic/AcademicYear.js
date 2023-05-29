@@ -23,6 +23,10 @@ const academicYearSchema = new Schema(
       ref: "Admin",
       required: true,
     },
+    updatedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
+    },
     students: [
       {
         type: Schema.Types.ObjectId,
