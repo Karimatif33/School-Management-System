@@ -7,7 +7,7 @@ const academicTermSchema = new Schema(
       required: true,
     },
     description: {
-      type: Date,
+      type: String,
       required: true,
     },
     duration: {
@@ -19,6 +19,10 @@ const academicTermSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Admin",
       required: true,
+    },
+    updatedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "Admin",
     },
   },
   {
