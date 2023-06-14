@@ -24,10 +24,10 @@ adminRouter.post("/register", registerAdminCtrl);
 adminRouter.post("/login", loginAdminCtrl);
 
 // Get all admins
-adminRouter.get("/", isLogin, isAdmin, getAdminsCtrl);
+adminRouter.get("/", getAdminsCtrl);
 
 // Get singel admin
-adminRouter.get("/profile",isLogin ,getAdminCtrl);
+adminRouter.get("/:id",isLogin, isAdmin,getAdminCtrl);
 
 // Update admin
 adminRouter.put("/:id", isLogin, isAdmin, updateAdminCtrl);
