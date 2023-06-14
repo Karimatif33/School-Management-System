@@ -128,6 +128,7 @@ exports.updateAdminCtrl = AsyncHandler(async (req, res) => {
 
 // delete admin
 exports.delteAdminCtrl =AsyncHandler(async (req, res) => {
+<<<<<<< HEAD
    const admin = await Admin.findByIdAndDelete(req.params.id)
    
   try {
@@ -136,11 +137,29 @@ exports.delteAdminCtrl =AsyncHandler(async (req, res) => {
       data: "Delete_All_Admin",
     });
   } catch (error) {
+=======
+const admin = await Admin.findByIdAndDelete(req.params.id)
+  if (!admin){
+>>>>>>> 009fff3b1f610fde9ac42e3160a9c41c692af03a
     res.json({
       status: "failed",
-      error: error.message,
+      error: "admin dosn't exist"
     });
   }
+<<<<<<< HEAD
+=======
+ try {
+   res.status(201).json({
+     status: "success",
+     data: "Delete admin(Param)",
+   });
+ } catch (error) {
+   res.json({
+     status: "failed",
+     error: error.message,
+   });
+ }
+>>>>>>> 009fff3b1f610fde9ac42e3160a9c41c692af03a
 }) 
 
 //  admin suspending teacher

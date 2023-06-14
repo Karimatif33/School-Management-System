@@ -24,6 +24,6 @@ academicYearRouter.get("/:id", isLogin, getAcademicYear);
 academicYearRouter.put("/:id", isLogin, isAdmin, updateAcademicYear);
 
 // delete AcademicYear
-academicYearRouter.delete("/:id", delteAcademicYears);
+academicYearRouter.delete("/:id",isLogin,isAdmin, delteAcademicYears);
 
 module.exports = academicYearRouter;
