@@ -61,6 +61,7 @@ exports.getAdminsCtrl = AsyncHandler(async (req, res) => {
 // Get singel admin (currnt logedin user)
 exports.getAdminCtrl = AsyncHandler(async (req, res) => {
   const admin = await Admin.findById(req.userAuth._id)
+  
     .select("-password -createdAt -updatedAt")
     .populate("academicYears");
 
@@ -126,11 +127,13 @@ exports.updateAdminCtrl = AsyncHandler(async (req, res) => {
 });
 
 // delete admin
-exports.delteAdminCtrl = (req, res) => {
+exports.delteAdminCtrl =AsyncHandler(async (req, res) => {
+   const admin = await Admin.findByIdAndDelete(req.params.id)
+   
   try {
     res.status(201).json({
       status: "success",
-      data: "Delete admin",
+      data: "Delete_All_Admin",
     });
   } catch (error) {
     res.json({
@@ -138,7 +141,7 @@ exports.delteAdminCtrl = (req, res) => {
       error: error.message,
     });
   }
-};
+}) 
 
 //  admin suspending teacher
 exports.adminSuspendTeacherCtrl = (req, res) => {
