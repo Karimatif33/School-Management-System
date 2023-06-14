@@ -126,19 +126,26 @@ exports.updateAdminCtrl = AsyncHandler(async (req, res) => {
 });
 
 // delete admin
-exports.delteAdminCtrl = (req, res) => {
-  try {
-    res.status(201).json({
-      status: "success",
-      data: "Delete admin",
-    });
-  } catch (error) {
+exports.delteAdminCtrl =AsyncHandler(async (req, res) => {
+const admin = await Admin.findByIdAndDelete(req.params.id)
+  if (!admin){
     res.json({
       status: "failed",
-      error: error.message,
+      error: "admin dosn't exist"
     });
   }
-};
+ try {
+   res.status(201).json({
+     status: "success",
+     data: "Delete admin(Param)",
+   });
+ } catch (error) {
+   res.json({
+     status: "failed",
+     error: error.message,
+   });
+ }
+}) 
 
 //  admin suspending teacher
 exports.adminSuspendTeacherCtrl = (req, res) => {

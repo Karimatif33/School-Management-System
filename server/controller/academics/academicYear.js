@@ -82,8 +82,8 @@ exports.updateAcademicYear = AsyncHandler(async (req, res) => {
 // delete AcademicYears
 exports.delteAcademicYears =AsyncHandler(async (req, res) => {
    await AcademicYear.findByIdAndDelete(req.params.id)
-   const admin = await Admin.findOne()
-   admin.academicYears.pull([req.params.id])
+   const admin = await Admin.findById(req.userAuth._id)
+  admin.academicYears.pull([req.params.id])
    await admin.save()
    console.log(admin)
   try {

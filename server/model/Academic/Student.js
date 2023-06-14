@@ -20,32 +20,23 @@ const studentSchema = new mongoose.Schema(
     teacherId: {
       type: String,
       required: true,
-      default: function () {
-        return (
-          "STU" +
-          Math.floor(100 + Math.random() * 900) +
-          Date.now().toString().slice(2, 4) +
-          this.name
-            .split(" ")
-            .map((name) => name[0])
-            .join("")
-            .toUpperCase()
-        );
-      },
+      default: teacherIdGenerator()
     },
     role: {
       type: String,
       default: "student",
     },
-    classLevels: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "ClassLevel",
-      required: true,
-    }],
+    classLevels: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ClassLevel",
+        required: true,
+      },
+    ],
     currentClassLevel: {
       type: String,
       default: function () {
-        return this.classLevels[this.classLevels.length - 1]
+        return this.classLevels[this.classLevels.length - 1];
       },
     },
     academicYear: {
@@ -54,9 +45,9 @@ const studentSchema = new mongoose.Schema(
       required: true,
     },
     dateAdmititted: {
-        type: Date,
-        default: Date.now,
-      },
+      type: Date,
+      default: Date.now,
+    },
     examResults: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -64,10 +55,10 @@ const studentSchema = new mongoose.Schema(
       },
     ],
     program: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Program",
-        required: true,
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Program",
+      required: true,
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Admin",
@@ -79,32 +70,32 @@ const studentSchema = new mongoose.Schema(
       required: true,
     },
     isPromotedToLevel200: {
-        type: Boolean,
-        default: false,
-      },
-      isPromotedToLevel300: {
-        type: Boolean,
-        default: false,
-      },
-      isPromotedToLevel400: {
-        type: Boolean,
-        default: false,
-      },
-      isGraduated: {
-        type: Boolean,
-        default: false,
-      },
-      isWithdrawn: {
-        type: Boolean,
-        default: false,
-      },
-      isSuspended: {
-        type: Boolean,
-        default: false,
-      },
-      prefectName: {
-        type: String,
-      },
+      type: Boolean,
+      default: false,
+    },
+    isPromotedToLevel300: {
+      type: Boolean,
+      default: false,
+    },
+    isPromotedToLevel400: {
+      type: Boolean,
+      default: false,
+    },
+    isGraduated: {
+      type: Boolean,
+      default: false,
+    },
+    isWithdrawn: {
+      type: Boolean,
+      default: false,
+    },
+    isSuspended: {
+      type: Boolean,
+      default: false,
+    },
+    prefectName: {
+      type: String,
+    },
     //   behaviorReport: [
     //     {
     //       type: mongoose.Schema.Types.ObjectId,
@@ -117,14 +108,22 @@ const studentSchema = new mongoose.Schema(
     //       ref: "FinancialReport",
     //     },
     //   ],
-      yearGraduated: {
-        type: String,
-      },
+    yearGraduated: {
+      type: String,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+const teacherIdGenerator = {
+  counter: 1 + Date().toString().slice(13, 15) + 0 + 0 + 1,
+  generateTeacherId: function () {
+    this.counter++;
+    return "STU" + this.counter;
+  },
+}
 
 // model
 const Student = mongoose.model("Student", studentSchema);

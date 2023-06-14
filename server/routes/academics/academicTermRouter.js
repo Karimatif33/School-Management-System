@@ -24,6 +24,6 @@ academicTermRouter.get("/:id", isLogin, getAcademicTerm);
 academicTermRouter.put("/:id", isLogin, isAdmin, updateAcademicTerm);
 
 // delete AcademicTerms
-academicTermRouter.delete("/:id", delteAcademicTerm);
+academicTermRouter.delete("/:id", isLogin, isAdmin, delteAcademicTerm);
 
 module.exports = academicTermRouter;

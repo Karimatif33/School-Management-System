@@ -82,10 +82,10 @@ exports.updateAcademicTerm = AsyncHandler(async (req, res) => {
 // delete AcademicTerms
 exports.delteAcademicTerm =AsyncHandler(async (req, res) => {
    await AcademicTerm.findByIdAndDelete(req.params.id)
-   const admin = await Admin.findOne()
+   const admin = await Admin.findById(req.userAuth._id)
    admin.academicTerms.pull([req.params.id])
-   await admin.save()
-   console.log(admin)
+    await admin.save()
+    console.log(admin)
   try {
     res.status(201).json({
       status: "success",
