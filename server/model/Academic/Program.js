@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+
 const ProgramSchema = new Schema(
   {
     name: {
@@ -23,10 +24,10 @@ const ProgramSchema = new Schema(
       default: function () {
         return (
           this.name
-            .split("")
+            .split(" ")
             .map((name) => name[0])
             .join("")
-            .toUpperCase() +
+            .toUpperCase() + '-' +
           Math.floor(10 + Math.random() * 90) +
           Math.floor(10 + Math.random() * 90)
         );
@@ -46,20 +47,20 @@ const ProgramSchema = new Schema(
       },
     ],
     students: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Student",
-          default: [],
-        },
-      ],
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Student",
+        default: [],
+      },
+    ],
     // will push the subjects that are in the program when the program is created
-      subjects: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: "Subject",
-          default: [],
-        },
-      ],
+    subjects: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Subject",
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

@@ -30,6 +30,10 @@ const adminSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref:"ClassLevel"
     }],
+    program:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Program"
+    }],
     teachers:[{
       type: mongoose.Schema.Types.ObjectId,
       ref:"Teachers"
