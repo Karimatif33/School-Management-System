@@ -20,7 +20,7 @@ const studentSchema = new mongoose.Schema(
     teacherId: {
       type: String,
       required: true,
-      default: teacherIdGenerator()
+      default: teacherIdGenerator.generateTeacherId()
     },
     role: {
       type: String,
@@ -117,13 +117,23 @@ const studentSchema = new mongoose.Schema(
   }
 );
 
+let amirican = "1"
+let british = "2"
+let fall = "1"
+let spring = "2"
 const teacherIdGenerator = {
-  counter: 1 + Date().toString().slice(13, 15) + 0 + 0 + 1,
+  counter: british + Date().toString().slice(13, 15)  + fall + 9 + 9 + 1,
   generateTeacherId: function () {
     this.counter++;
-    return "STU" + this.counter;
-  },
-}
+     
+      if("STU-" + this.counter >= "STU-" + 2232000){
+        return "Maximam id number" 
+  } else 
+      {
+          return "STU-" + this.counter
+      }
+},
+    };
 
 // model
 const Student = mongoose.model("Student", studentSchema);
