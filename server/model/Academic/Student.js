@@ -1,4 +1,23 @@
 const mongoose = require("mongoose");
+
+let amirican = "1"
+let british = "2"
+let fall = "1"
+let spring = "2"
+const teacherIdGenerator = {
+  counter: british + Date().toString().slice(13, 15)  + fall + 9 + 9 + 1,
+  generateTeacherId: function () {
+    this.counter++;
+     
+      if("STU-" + this.counter >= "STU-" + 2232000){
+        return "Maximam id number" 
+  } else 
+      {
+          return "STU-" + this.counter
+      }
+},
+    };
+
 const studentSchema = new mongoose.Schema(
   {
     name: {
@@ -117,23 +136,6 @@ const studentSchema = new mongoose.Schema(
   }
 );
 
-let amirican = "1"
-let british = "2"
-let fall = "1"
-let spring = "2"
-const teacherIdGenerator = {
-  counter: british + Date().toString().slice(13, 15)  + fall + 9 + 9 + 1,
-  generateTeacherId: function () {
-    this.counter++;
-     
-      if("STU-" + this.counter >= "STU-" + 2232000){
-        return "Maximam id number" 
-  } else 
-      {
-          return "STU-" + this.counter
-      }
-},
-    };
 
 // model
 const Student = mongoose.model("Student", studentSchema);
