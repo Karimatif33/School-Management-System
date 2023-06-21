@@ -82,7 +82,9 @@ exports.updateSubject = AsyncHandler(async (req, res) => {
   });
 });
 // delete subject
+// delete subject
 exports.delteSubject = AsyncHandler(async (req, res) => {
+<<<<<<< HEAD
 const ProgramID = await Subject.findById(req.params.ProgramID)
 // await Subject.findByIdAndDelete(req.params.ProgramID);
   const ProgramFound = await Program.find({ subjects: { $eq: req.params.ProgramID } })
@@ -101,3 +103,30 @@ const ProgramID = await Subject.findById(req.params.ProgramID)
     });
   }
 });
+
+  const programID = req.params.ProgramID;
+ // Find the Subject by ID and remove it
+ await Subject.findByIdAndDelete(programID);
+
+ // Find the Program(s) that contain the deleted Subject and update the subjects array
+ const programsToUpdate = await Program.find({ subjects: programID });
+
+ // Iterate over the found programs and remove the subject from the subjects array
+ for (const program of programsToUpdate) {
+   program.subjects.pull(programID);
+   await program.save();
+ }
+    console.log(program,"test");
+    try {
+      res.status(201).json({
+        status: "success",
+        data: "Delete subject",
+      });
+    } catch (error) {
+      res.json({
+        status: "failed",
+        error: error.message,
+      });
+    }
+  });
+  
