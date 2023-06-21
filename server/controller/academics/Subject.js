@@ -83,11 +83,12 @@ exports.updateSubject = AsyncHandler(async (req, res) => {
 });
 // delete subject
 exports.delteSubject = AsyncHandler(async (req, res) => {
-  await Subject.findByIdAndDelete(req.params.ProgramID);
-  const ProgramFound = await Program.findOne()
-  // ProgramFound.subjects.pull([req.params.id]);
-  // await ProgramFound.save();
-  console.log(ProgramFound);
+const ProgramID = await Subject.findById(req.params.ProgramID)
+// await Subject.findByIdAndDelete(req.params.ProgramID);
+  const ProgramFound = await Program.find({ subjects: { $eq: req.params.ProgramID } })
+  // Program.subjects.pull([req.params.id]);
+    // await Program.save();
+  console.log(ProgramFound,"test");
   try {
     res.status(201).json({
       status: "success",
