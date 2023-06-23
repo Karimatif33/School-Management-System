@@ -96,11 +96,11 @@ exports.delteSubject = AsyncHandler(async (req, res) => {
    program.subjects.pull(programID);
    await program.save();
  }
-    console.log(program,"test");
+    // console.log(program,"test");
     try {
       res.status(201).json({
         status: "success",
-        data: "Delete subject",
+        data: "subject Deleted ",
       });
     } catch (error) {
       res.json({
