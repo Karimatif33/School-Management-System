@@ -34,6 +34,10 @@ const adminSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref:"Program"
     }],
+    yearGroup:[{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"YearGroup"
+    }],
     teachers:[{
       type: mongoose.Schema.Types.ObjectId,
       ref:"Teachers"

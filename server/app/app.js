@@ -10,6 +10,7 @@ const academicTermRouter = require("../routes/academics/academicTermRouter");
 const classLevelRouter = require("../routes/academics/classLevelRouter");
 const programRouter = require("../routes/academics/programRouter");
 const SubjectRouter = require("../routes/academics/SubjectRouter");
+const yearGroupRouter = require("../routes/academics/YearGroupRouter");
 const app = express();
 
 // Middlewares
@@ -25,6 +26,7 @@ app.use("/api/v1/academic-terms", academicTermRouter);
 app.use("/api/v1/class-level", classLevelRouter);
 app.use("/api/v1/programs", programRouter);
 app.use("/api/v1/Subjects", SubjectRouter);
+app.use("/api/v1/year-group", yearGroupRouter);
 
 // Error handler middlewares
 app.use(notFoundErr);
